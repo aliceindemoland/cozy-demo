@@ -38,15 +38,24 @@
       <nav class="flex-1 hidden md:flex justify-end lg:order-last lg:ml-4">
         <div class="flex flex-row flex-nowrap">
           <SfButton
-            v-for="actionItem in actionItems"
-            :key="actionItem.ariaLabel"
             class="mr-2 -ml-0.5 rounded-md text-primary-700 hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
-            :aria-label="actionItem.ariaLabel"
+            aria-label="Log in"
             variant="tertiary"
             square
           >
             <template #prefix>
-              <Component :is="actionItem.icon" />
+              <SfIconPerson />
+            </template>
+          </SfButton>
+          <SfButton
+            class="mr-2 -ml-0.5 rounded-md text-primary-700 hover:bg-primary-100 active:bg-primary-200 hover:text-primary-600 active:text-primary-700"
+            aria-label="Cart"
+            variant="tertiary"
+            square
+            @click="handleOpenDrawer"
+          >
+            <template #prefix>
+              <SfIconShoppingCart />
             </template>
           </SfButton>
         </div>
@@ -54,8 +63,8 @@
     </div>
   </header>
 </template>
-<script lang="ts" setup>
-import { ref } from 'vue';
+
+<script setup>
 import {
   SfButton,
   SfIconShoppingCart,
@@ -68,25 +77,15 @@ import {
   SfIconArrowBack,
 } from '@storefront-ui/vue';
 
-const actionItems = [
-  {
-    label: 'Log in',
-    icon: SfIconPerson,
-    ariaLabel: 'Log in',
-    role: 'login',
-  },
-  {
-    icon: SfIconShoppingCart,
-    ariaLabel: 'Cart',
-    role: 'button',
-    label: '',
-  },
-];
+// const emit = defineEmits(['openDrawer']);
+const { isDrawerOpen, openDrawer } = useDrawer();
 
-const inputValue = ref('');
+const handleOpenDrawer = () => {
 
-const search = () => {
-  alert(`Successfully found 10 results for ${inputValue.value}`);
-};
+    openDrawer();
+  
+  // console.log('NavBar: openDrawer event emitted');
+  // emit('openDrawer');
+}
+
 </script>
-

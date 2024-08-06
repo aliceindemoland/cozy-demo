@@ -1,140 +1,83 @@
 <template>
-    <!-- <fieldset>
-      <label v-for="{ label, value } in options" :key="value" class="flex items-center my-4 cursor-pointer">
-        <SfRadio v-model="placement" class="flex items-center" name="placement" :value="value" />
-        <span class="ml-2">{{ label }}</span>
-      </label>
-    </fieldset>
-    <SfButton @click="open = true"> Open Drawer </SfButton> -->
-  
     <transition
       enter-active-class="transition duration-500 ease-in-out"
       leave-active-class="transition duration-500 ease-in-out"
-      enter-from-class="placement === 'left' ? '-translate-x-full' : 'translate-x-full'"
-      enter-to-class="placement === 'left' ? 'translate-x-0' : 'translate-x-0'"
-      leave-from-class="placement === 'left' ? 'translate-x-0' : 'translate-x-0'"
-      leave-to-class="placement === 'left' ? '-translate-x-full' : 'translate-x-full'"
+      enter-from-class="translate-x-full"
+      enter-to-class="translate-x-0"
+      leave-from-class="translate-x-0"
+      leave-to-class="translate-x-full"
     >
       <SfDrawer
-        v-model="isOpen"
+        v-model="isDrawerOpen"
         placement="right"
         class="bg-neutral-50 border border-gray-300 max-w-[370px]"
       >
-        <header class="flex items-center justify-between px-10 py-6 bg-primary-700">
-          <div class="flex items-center text-white"><SfIconFavorite class="mr-2" /> Your favorite items</div>
-          <SfButton square variant="tertiary" class="text-white" @click="isOpen = false">
-            <SfIconClose />
-          </SfButton>
-        </header>
-        <div class="p-5 px-10">
-          <p class="mb-2">
-            Focus is trapped inside this Drawer and <strong>tab</strong> button cycle through
-            <a href="#" class="underline text-primary-700"> Focusable Element </a> and another
-            <a href="#" class="underline text-primary-700"> Focusable Element </a>
-          </p>
-          <strong>You can close Drawer by clicking outside or focus and use ESC button</strong>
-             <SfButton class="w-full" @click="handleContinueToCheckout"> Continue to Checkout </SfButton>
+      <div class="relative">
+        <header class="px-10 py-6 bg-white">
+  <div class="text-[#CDA87E]"><SfIconShoppingCart class="mr-2" /> Your Cart</div>
+</header>
+<SfButton 
+  square 
+  variant="tertiary" 
+  class="absolute top-4 right-4 bg-white" 
+  @click="closeDrawer"
+>
+  <SfIconClose :style="{ color: '#CDA87E' }"/>
+</SfButton>
+
+    </div>
+<div class="p-5 px-10">
+    <ul v-if="cartItemsWithQuantity.length" class="divide-y">
+    <li
+      v-for="item in cartItemsWithQuantity"
+      :key="item.id"
+      class="py-4 flex justify-between items-center"
+    >
+      <div>
+        <h3 class="font-medium">{{ item.name }}</h3>
+        <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+      </div>
+      <SfButton square variant="tertiary" @click="handleRemoveFromCart(item.id)">
+        <SfIconRemove />
+      </SfButton>
+    </li>
+</ul>
+<p v-else class="text-center py-4">Your cart is empty</p>
+<SfButton v-if="cartItemsWithQuantity.length"class="w-full mt-4" @click="handleContinueToCheckout">Continue to Checkout</SfButton>
         </div>
       </SfDrawer>
     </transition>
   </template>
-  
-  <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+
+  <script setup>
+  import { computed, ref } from 'vue';
   import {
     SfDrawer,
-    SfDrawerPlacement,
     SfButton,
     SfIconFavorite,
     SfIconClose,
-    useTrapFocus,
   } from '@storefront-ui/vue';
-
   
-  export default defineComponent({
-  components: {
-    SfDrawer,
-    SfButton,
-    SfIconFavorite,
-    SfIconClose
-  },
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true
-    },
-    // product: {
-    //   type: Object,
-    //   required: true
-    // }
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    console.log('Drawer setup function called', props.modelValue);
+  const placement = 'right';
 
-    const isOpen = computed({
-      get: () => {
-        console.log('isOpen getter called, value:', props.modelValue);
-        return props.modelValue;
-      },
-      set: (value: boolean) => {
-        console.log('isOpen setter called with value:', value);
-        emit('update:modelValue', value);
-      }
+  const { cart, removeFromCart } = useCart();
+  const { isDrawerOpen, closeDrawer } = useDrawer();
+
+
+  const cartItemsWithQuantity = computed(() => {
+    return cart.value.filter(item => item.quantity > 0);
+  });
+  
+  const handleContinueToCheckout = async () => {
+    console.log('Continue to Checkout');
+  
+    navigateTo({
+      path: '/checkout',
     });
+  };
 
-    const placement = 'right';
-    const clientSecret = ref('');
-
-    const handleContinueToCheckout = async () => {
-      console.log('Continue to Checkout');
-
-      navigateTo({
-            path: '/checkout',
-            query: {
-            clientSecret: clientSecret.value
-        }
-    })
-
-    // try {
-    //     const response = await fetch('/api/stripe', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         priceId: 'price_1PjY32FZqQAkkHKQ19paJf0z',
-    //         quantity: 1
-    //     })
-    //     });
-    //     const data = await response.json();
-    //     console.log('>>> clientSecret', data.clientSecret)
-    //     clientSecret.value = data.clientSecret;
-    //     console.log('>>> clientSecret.value', clientSecret.value)
-
-    //     if (data.clientSecret) {
-    //     console.log('>>> navigateTo', clientSecret.value)
-    //     await navigateTo({
-    //         path: '/checkout',
-    //         query: {
-    //         clientSecret: clientSecret.value
-    //         }
-    //     })
-    //     } else {
-    //     console.error('No client secret received from server');
-    //     }
-    // } catch (error) {
-    //     console.error('Error adding to cart:', error);
-    // }
-
-    }
-
-    return {
-      isOpen,
-      handleContinueToCheckout
-    };
+  const handleRemoveFromCart = (productId) => {
+    console.log('Remove from Cart', productId);
+    removeFromCart(productId);
   }
-});
-</script>
-  
-  
+  </script>

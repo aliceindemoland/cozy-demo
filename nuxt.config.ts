@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@storefront-ui/nuxt'],
   runtimeConfig: {
-    stripeSecretKey: process.env.STRIPE_SECRET_KEY
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    public: {
+      siteUrl: process.env.SITE_URL, 
+    }
   }
 });

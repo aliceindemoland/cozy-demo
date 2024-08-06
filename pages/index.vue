@@ -1,27 +1,29 @@
 <template>
-    <NavBar/>
-    <ProductList @openDrawer="openDrawer"/>
-    <Drawer v-model="isDrawerOpen" />
-    <Footer/>
-  </template>
-  
-  <script lang="ts" setup>
-  useHead({
+  <NavBar/>
+  <ProductList/>
+  <Drawer/>
+  <Footer/>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+// import { useHead } from '#head';
+import Drawer from '../components/Drawer.vue';
+import ProductList from '../components/ProductList.vue';
+
+useHead({
   script: [
     {
       src: 'https://js.stripe.com/v3/',
       defer: true
     }
   ]
-})
-  import Drawer from '../components/Drawer.vue';
-  import ProductList from '../components/ProductList.vue';
+});
 
-  const isDrawerOpen = ref(false);
-  const openDrawer = () => {
-  isDrawerOpen.value = true;
-};
- 
+const { openDrawer, closeDrawer } = useDrawer();
+
+onMounted(() => {
+  closeDrawer();
+  console.log('Drawer closed on page load');
+});
 </script>
-  
-  

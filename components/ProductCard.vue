@@ -34,19 +34,19 @@
       </p>
       <span class="block pb-2 font-bold typography-text-lg"> {{ product.price }} </span>
 
-      <SfButton size="sm" @click="handleClick">
+      <SfButton size="sm" @click="handleAddToCart">
         <template #prefix>
           <SfIconShoppingCart size="sm" />
         </template>
-        Buy now
+        Add to cart
       </SfButton>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { SfRating, SfCounter, SfLink, SfButton, SfIconShoppingCart, SfIconFavorite } from '@storefront-ui/vue';
-
+const { isDrawerOpen, toggleDrawer, openDrawer } = useDrawer();
 const props = defineProps({
   product: {
     type: Object,
@@ -54,44 +54,17 @@ const props = defineProps({
   }
 })
 
-const clientSecret = ref('');
-const emit = defineEmits(['openDrawer']);
+const { addToCart } = useCart();
 
-const handleClick = async () => {
-  console.log('Buy now', props.product.name, props.product.id)
-  emit('openDrawer');
-  console.log('ProductCard: openDrawer event emitted');
+const handleAddToCart = async () => {
+  addToCart(props.product);
+  console.log('Add to cart', props.product.name, props.product.id)
+
+  console.log('ProductCard: isDrawerOpen', isDrawerOpen.value)
+
+    openDrawer();
   
-  // try {
-  //   const response = await fetch('/api/stripe', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       priceId: props.product.id,
-  //       quantity: 1
-  //     })
-  //   });
-  //   const data = await response.json();
-  //   console.log('>>> clientSecret', data.clientSecret)
-  //   clientSecret.value = data.clientSecret;
-  //   console.log('>>> clientSecret.value', clientSecret.value)
 
-  //   // if (data.clientSecret) {
-  //   //   console.log('>>> navigateTo', clientSecret.value)
-  //   //   await navigateTo({
-  //   //     path: '/checkout',
-  //   //     query: {
-  //   //       clientSecret: clientSecret.value
-  //   //     }
-  //   //   })
-  //   // } else {
-  //   //   console.error('No client secret received from server');
-  //   // }
-  // } catch (error) {
-  //   console.error('Error adding to cart:', error);
-  // }
 }
 </script>
 
