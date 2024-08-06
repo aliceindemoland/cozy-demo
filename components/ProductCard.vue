@@ -99,7 +99,7 @@ const handleAddToCart = async () => {
           <h3 class="font-medium text-base text-neutral-900 truncate flex-1 mr-2">{{ product.name }}</h3>
           <span class="font-bold typography-text-lg whitespace-nowrap">${{ product.price }}</span>
         </div>
-        <SfButton size="sm" class="w-full !rounded-none" @click="handleAddToCart">
+        <SfButton variant="primary" size="sm" class="w-full !rounded-none" @click="handleAddToCart">
           Add to bag
         </SfButton>
       </div>

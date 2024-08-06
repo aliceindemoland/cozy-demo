@@ -4,15 +4,15 @@
       class="grid justify-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] px-4 md:px-6 pb-10 max-w-[1536px] mx-auto"
     >
       <ul v-for="{ label, subcategories } in categories" :key="label" class="grid grid-cols xs:pb-4">
-        <li class="ml-4 text-lg font-medium leading-7 text-neutral-900 font-body">{{ label }}</li>
+        <li class="ml-4 text-base font-medium leading-6 text-neutral-900 font-body mb-2">{{ label }}</li>
         <SfListItem
           v-for="{ subcategoryLabel, link } in subcategories"
           :key="subcategoryLabel"
-          class="py-2 !bg-transparent typography-text-sm font-body"
+          class="py-1 !bg-transparent"
         >
           <SfLink
-            class="no-underline text-neutral-600 hover:underline hover:!text-neutral-900 active:underline active:!text-neutral-900"
-            variant="secondary"
+            class="no-underline text-neutral-600 hover:underline hover:!text-neutral-900 active:underline active:!text-neutral-900 text-sm"
+            variant="primary"
             :href="link"
           >
             {{ subcategoryLabel }}
@@ -21,24 +21,7 @@
       </ul>
     </div>
     <hr />
-    <div class="py-10 md:flex md:mx-auto max-w-[1536px]">
-      <div v-for="{ label, icon, link, details } in contactOptions" :key="label" class="mx-auto my-4 text-center">
-        <component :is="icon" size="lg" />
-        <p class="py-1 my-2 font-medium typography-text-lg font-body">
-          <SfLink
-            variant="secondary"
-            class="no-underline text-neutral-600 hover:underline hover:!text-neutral-900 active:underline active:!text-neutral-900"
-            :href="link"
-          >
-            {{ label }}
-          </SfLink>
-        </p>
-        <p v-for="option in details" :key="option" class="leading-5 typography-text-sm text-neutral-600 font-body">
-          {{ option }}
-        </p>
-      </div>
-    </div>
-    <div class="bg-neutral-900 justify-end px-4 py-10 md:flex md:py-6 max-w-[1536px] mx-auto">
+    <div class="bg-neutral-100 justify-end px-4 py-10 md:flex md:py-6 max-w-[1536px] mx-auto">
       <div class="flex justify-center py-2 gap-x-4 md:self-start">
         <SfButton
           v-for="{ label, link, icon } in socialMedia"
@@ -46,28 +29,28 @@
           tag="a"
           square
           variant="tertiary"
-          class="text-white active:text-white hover:text-white hover:!bg-neutral-500 active:!bg-transparent"
+          class="text-primary-600 active:text-primary-800 hover:text-primary-700 hover:!bg-primary-100 active:!bg-primary-200"
           :href="link"
           :aria-label="`Go to ${label} page`"
         >
           <component :is="icon" />
         </SfButton>
       </div>
-      <div class="flex items-center justify-center gap-6 py-2 my-4 md:ml-auto md:my-0">
+      <div class="flex items-center justify-center gap-4 py-2 my-3 md:ml-auto md:my-0">
         <SfLink
           v-for="{ label, link } in bottomLinks"
           :key="label"
-          variant="secondary"
-          class="text-white no-underline typography-text-sm active:text-white active:underline hover:text-white hover:underline"
+          variant="primary"
+          class="text-primary-600 no-underline text-xs active:text-primary-800 active:underline hover:text-primary-700 hover:underline"
           :href="link"
         >
           {{ label }}
         </SfLink>
       </div>
       <p
-        class="flex items-center justify-center py-2 leading-5 text-center typography-text-sm text-white/50 font-body md:ml-6"
+      class="flex items-center justify-center py-1 leading-4 text-center text-xs text-primary-600/70 font-body md:ml-4"
       >
-        @2024 Alokai
+        @2024 Cozy Threads
       </p>
     </div>
   </footer>
@@ -88,47 +71,22 @@ import {
 } from '@storefront-ui/vue';
 const categories = [
   {
-    label: 'How to buy',
+    label: 'Customer Care',
     subcategories: [
       {
-        subcategoryLabel: 'Payment methods',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
+        subcategoryLabel: 'Contact Us',
         link: '#',
       },
       {
         subcategoryLabel: 'Returns',
         link: '#',
       },
-    ],
-  },
-  {
-    label: 'Help',
-    subcategories: [
       {
-        subcategoryLabel: 'Help centers',
+        subcategoryLabel: 'Order and Shipping',
         link: '#',
       },
       {
-        subcategoryLabel: 'Security & fraud',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Feedback',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Contact',
+        subcategoryLabel: 'FAQs',
         link: '#',
       },
     ],
@@ -137,19 +95,40 @@ const categories = [
     label: 'Services',
     subcategories: [
       {
-        subcategoryLabel: 'Gift cards',
+        subcategoryLabel: 'Product Care',
         link: '#',
       },
       {
-        subcategoryLabel: 'Order pickup',
+        subcategoryLabel: 'The Cozy Exchange',
         link: '#',
       },
       {
-        subcategoryLabel: 'Purchase status',
+        subcategoryLabel: 'Gift Services',
         link: '#',
       },
       {
-        subcategoryLabel: 'Track orders',
+        subcategoryLabel: 'ShopRunner',
+        link: '#',
+      },
+    ],
+  },
+  {
+    label: 'Sustainability',
+    subcategories: [
+      {
+        subcategoryLabel: 'Made to Last',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Sustainable Materials',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Climate',
+        link: '#',
+      },
+      {
+        subcategoryLabel: 'Our Impact',
         link: '#',
       },
     ],
@@ -158,23 +137,19 @@ const categories = [
     label: 'About',
     subcategories: [
       {
-        subcategoryLabel: 'About us',
+        subcategoryLabel: 'The Cozy Story',
         link: '#',
       },
       {
-        subcategoryLabel: 'Order pickup',
+        subcategoryLabel: 'Investors',
         link: '#',
       },
       {
-        subcategoryLabel: 'Purchase status',
+        subcategoryLabel: 'Careers',
         link: '#',
       },
       {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Returns',
+        subcategoryLabel: 'Cozy Foundation',
         link: '#',
       },
     ],
@@ -229,11 +204,11 @@ const contactOptions = [
 ];
 const bottomLinks = [
   {
-    label: 'Terms',
+    label: 'Terms & Conditions',
     link: '#',
   },
   {
-    label: 'Privacy policy',
+    label: 'Privacy Policy',
     link: '#',
   },
 ];
