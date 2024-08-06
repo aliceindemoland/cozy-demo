@@ -72,11 +72,23 @@ export const useCart = () => {
           cartItem.quantity--
         }
       }
+
+    const cartItemsWithQuantity = computed(() => {
+        return cart.value.filter(item => item.quantity > 0)
+    })
+
+    const subtotal = computed(() => {
+        return cartItemsWithQuantity.value.reduce((total, item) => {
+            return total + (item.quantity * item.price)
+        }, 0)
+    })
   
     return {
       cart,
       addToCart,
-      removeFromCart
+      removeFromCart,
+      cartItemsWithQuantity,
+      subtotal
     }
   }
 
