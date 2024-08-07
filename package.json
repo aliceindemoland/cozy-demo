@@ -12,6 +12,7 @@
     "start": "nuxt start"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^4.1.0",
     "nuxt": "^3.12.4",
     "stripe": "^16.6.0",
     "vue": "latest"

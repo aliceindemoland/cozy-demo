@@ -57,8 +57,7 @@ export const useProducts = () => {
 export const useCart = () => {
     const { products } = useProducts()
     const cart = useState('cart', () => products.value.map(product => ({ ...product, quantity: 0 })))
-    console.log('>>> cart', cart)
-    // const cart = useState('cart', () => [])
+
     const addToCart = (product) => {
         const cartItem = cart.value.find(item => item.id === product.id)
         if (cartItem) {

@@ -6,7 +6,23 @@ export default defineNuxtConfig({
   runtimeConfig: {
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     public: {
-      siteUrl: process.env.SITE_URL, 
+      siteUrl: process.env.SITE_URL || 'http://localhost:3000', 
     }
-  }
+  },
+  app: {
+    head: {
+      title: 'Cozy Threads',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: 'Your cozy clothing store' }
+      ],
+      script: [
+        {
+          src: 'https://js.stripe.com/v3/',
+          async: true
+        }
+      ]
+    }
+  },
 });

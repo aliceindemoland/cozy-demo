@@ -63,7 +63,7 @@
     <input
       v-model="inputValue"
       type="search"
-      placeholder="Find your style"
+      placeholder="Find your cozy"
       class="peer pl-8 pr-2 py-1 w-40 text-sm text-gray-700 placeholder-gray-400 bg-transparent border-b border-gray-300 focus:border-gray-500 focus:outline-none transition-colors"
     />
     <SfIconSearch

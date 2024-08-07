@@ -85,7 +85,8 @@
   const handleContinueToCheckout = async () => {
     console.log('Continue to Checkout');
     navigateTo({
-      path: '/checkout',
+    //   path: '/checkout-embedded',
+    path: '/checkout',
     });
   };
   
