@@ -28,26 +28,29 @@
             </SfButton>
           </header>
         </div>
-        
         <div class="flex-grow overflow-y-auto p-4 sm:p-5 sm:pl-10 sm:pr-5">
-          <ul v-if="cartItemsWithQuantity.length" class="divide-y">
-            <li
-              v-for="item in cartItemsWithQuantity"
-              :key="item.id"
-              class="py-4 flex justify-between items-center"
-            >
-              <div>
-                <h3 class="font-medium">{{ item.name }}</h3>
-                <p class="text-sm text-gray-500">Qty: {{ item.quantity }} @ ${{ item.price.toFixed(2) }}</p>
-              </div>
-              <SfButton square variant="tertiary" @click="handleRemoveFromCart(item.id)">
-                <SfIconRemove :style="{ color: '#CDA87E' }"/>
-              </SfButton>
-            </li>
-          </ul>
-          <p v-else class="text-center py-4">Your bag is empty</p>
-        </div>
-        
+        <ul v-if="cartItemsWithQuantity.length" class="divide-y">
+          <li
+            v-for="item in cartItemsWithQuantity"
+            :key="item.id"
+            class="py-4 flex items-center"
+          >
+            <img 
+              :src="item.image" 
+              :alt="item.name"
+              class="w-16 h-16 object-cover mr-4"
+            />
+            <div class="flex-grow">
+              <h3 class="font-medium">{{ item.name }}</h3>
+              <p class="text-sm text-gray-500">Qty: {{ item.quantity }} @ ${{ item.price.toFixed(2) }}</p>
+            </div>
+            <SfButton square variant="tertiary" @click="handleRemoveFromCart(item.id)">
+              <SfIconRemove :style="{ color: '#CDA87E' }"/>
+            </SfButton>
+          </li>
+        </ul>
+        <p v-else class="text-center py-4">Your bag is empty</p>
+      </div>
         <!-- Sticky Subtotal Section -->
         <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4 sm:p-5">
           <div v-if="cartItemsWithQuantity.length" class="mb-4">

@@ -81,13 +81,18 @@ export const useCart = () => {
             return total + (item.quantity * item.price)
         }, 0)
     })
+
+    const itemsInCart = computed(() => {
+        return cartItemsWithQuantity.value.reduce((total, item) => total + item.quantity, 0)
+    })
   
     return {
       cart,
       addToCart,
       removeFromCart,
       cartItemsWithQuantity,
-      subtotal
+      subtotal,
+      itemsInCart
     }
   }
 

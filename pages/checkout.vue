@@ -11,6 +11,7 @@
 
         <!-- Payment Element (left column on large screens, bottom on mobile) -->
         <div class="lg:col-start-1 lg:row-start-1">
+          <div id="link-auth-element" class="bg-neutral-50 shadow-md p-6"></div>
           <div id="address-element" class="bg-neutral-50 shadow-md p-6"></div>
           <div id="payment-element" class="bg-neutral-50 shadow-md p-6"></div>
         </div>
@@ -87,7 +88,9 @@ onMounted(async() => {
   paymentElement.mount("#payment-element");
   const addressElement = elements.create('address', options);
   addressElement.mount('#address-element');
-  
+  const linkAuthElement = elements.create('linkAuthentication');
+linkAuthElement.mount('#link-auth-element');
+
   
 // const appearance = { /* appearance */ };
 // const options = { mode: 'shipping' };

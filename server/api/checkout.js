@@ -8,6 +8,24 @@ const siteUrl = isDev ? 'http://localhost:3000' : config.public.siteUrl;
 
 export default defineEventHandler(async (event) => {
     // Check if it's a GET request (for retrieving session)
+    if (event.node.req.method === 'GET') {
+        const query = getQuery(event);
+        const paymentIntentId = query.payment_intent;
+
+        if (!paymentIntentId) {
+        event.node.res.statusCode = 400;
+        return { error: 'Missing payment_intent parameter' };
+        }
+
+        try {
+            const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+            return { paymentIntent };
+        } catch (error) {
+            console.error('Error retrieving payment intent:', error);
+            event.node.res.statusCode = 500;
+            return { error: 'Failed to retrieve payment intent' };
+        }
+    }
 
     if (event.node.req.method === 'POST') {
         const body = await readBody(event);
@@ -29,32 +47,4 @@ export default defineEventHandler(async (event) => {
         return { error: 'Failed to retrieve payment intent' };
       }
     }
-  
-    // // Existing POST logic for creating a session
-    // if (event.node.req.method === 'POST') {
-    //   const body = await readBody(event);
-    //   const { items } = body;
-  
-    //   try {
-    //     const session = await stripe.checkout.sessions.create({       
-    //       line_items: items.map(item => ({
-    //         price: item.priceId,
-    //         quantity: item.quantity
-    //       })),
-    //       mode: 'payment',
-    //       ui_mode: 'embedded',
-    //       return_url: `${siteUrl}/confirmation?session_id={CHECKOUT_SESSION_ID}`
-    //     });
-  
-    //     return { clientSecret: session.client_secret };
-    //   } catch (error) {
-    //     console.error('Error creating checkout session:', error);
-    //     event.node.res.statusCode = 500;
-    //     return { error: 'Failed to create checkout session' };
-    //   }
-    // }
-  
-    // // If neither GET nor POST, return method not allowed
-    // event.node.res.statusCode = 405;
-    // return { error: 'Method not allowed' };
   });

@@ -15,7 +15,7 @@
               <p>Estimated Sales Tax</p>
             </div>
             <div class="flex flex-col text-right">
-              <p>{{ formatPrice(itemsSubtotal) }}</p>
+              <p>{{ formatPrice(orderDetails.originalPrice) }}</p>
               <!-- <p class="typography-text-xs text-neutral-500">{{ formatPrice(orderDetails.originalPrice) }}</p> -->
               <!-- <p class="typography-text-xs text-secondary-700">{{ formatPrice(orderDetails.savings) }}</p> -->
               <p class="my-2">{{ formatPrice(orderDetails.delivery) }}</p>
@@ -105,17 +105,19 @@
   <script lang="ts" setup>
   import { ref, computed } from 'vue';
   import { SfButton, SfInput, SfLink, SfIconClose, SfIconCheckCircle } from '@storefront-ui/vue';
-  
+
   defineEmits(['handlePayment']);
 
   const inputValue = ref('');
   const showRemovedCodeAlert = ref(false);
   const showAddedCodeAlert = ref(false);
   const showErrorAlert = ref(false);
+
+  const { itemsInCart, subtotal } = useCart()
   
   const orderDetails = {
-    items: 3,
-    originalPrice: 7824.97,
+    items: itemsInCart.value,
+    originalPrice: subtotal.value,
     savings: -787.0,
     delivery: 0.0,
     tax: 7.47,
@@ -123,9 +125,8 @@
   
   const promoCode = ref(0);
   
-  const itemsSubtotal = 79.99;
 
-  const totalPrice = itemsSubtotal + orderDetails.tax;
+  const totalPrice = orderDetails.originalPrice + orderDetails.tax;
 
   const checkPromoCode = () => {
     if ((promoCode.value === -100 && inputValue.value.toUpperCase() === 'VSF2020') || !inputValue.value) return;
