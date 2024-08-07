@@ -57,6 +57,7 @@ export const useProducts = () => {
 export const useCart = () => {
     const { products } = useProducts()
     const cart = useState('cart', () => products.value.map(product => ({ ...product, quantity: 0 })))
+    const TAX_RATE = 0.0825; // 8.25% tax rate, adjust as needed
 
     const addToCart = (product) => {
         const cartItem = cart.value.find(item => item.id === product.id)
@@ -72,6 +73,10 @@ export const useCart = () => {
         }
       }
 
+    const itemsInCart = computed(() => {
+        return cartItemsWithQuantity.value.reduce((total, item) => total + item.quantity, 0)
+    })
+
     const cartItemsWithQuantity = computed(() => {
         return cart.value.filter(item => item.quantity > 0)
     })
@@ -82,9 +87,14 @@ export const useCart = () => {
         }, 0)
     })
 
-    const itemsInCart = computed(() => {
-        return cartItemsWithQuantity.value.reduce((total, item) => total + item.quantity, 0)
-    })
+    const tax = computed(() => {
+        return subtotal.value * TAX_RATE;
+      });
+    
+    const totalPrice = computed(() => {
+    return subtotal.value + tax.value;
+    });
+
   
     return {
       cart,
@@ -92,7 +102,9 @@ export const useCart = () => {
       removeFromCart,
       cartItemsWithQuantity,
       subtotal,
-      itemsInCart
+      itemsInCart,
+      tax,
+      totalPrice    
     }
   }
 
@@ -100,25 +112,19 @@ export const useCart = () => {
     const isDrawerOpen = useState('isDrawerOpen', () => false)
   
     const openDrawer = () => {
-      console.log('openDrawer called, current state:', isDrawerOpen.value)
       if (!isDrawerOpen.value) {
         isDrawerOpen.value = true
-        console.log('Drawer opened, new state:', isDrawerOpen.value)
       }
     }
   
     const closeDrawer = () => {
-      console.log('closeDrawer called, current state:', isDrawerOpen.value)
       if (isDrawerOpen.value) {
         isDrawerOpen.value = false
-        console.log('Drawer closed, new state:', isDrawerOpen.value)
       }
     }
   
     const toggleDrawer = () => {
-      console.log('toggleDrawer called, current state:', isDrawerOpen.value)
       isDrawerOpen.value = !isDrawerOpen.value
-      console.log('Drawer toggled, new state:', isDrawerOpen.value)
     }
   
     return {

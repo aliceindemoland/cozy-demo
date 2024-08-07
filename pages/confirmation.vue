@@ -2,12 +2,13 @@
     <div class="flex flex-col min-h-screen">
       <NavBar />
       <main class="flex-grow container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-center">Thank you for your order!</h1>
-        <div v-if="loading" class="text-center">
-          Loading order details...
+          <h1 v-if="confirmationData" class="text-3xl font-bold mb-8 text-center">Thank you for your order!</h1>
+          <div v-if="loading" class="text-center">
+              Loading order details...
         </div>
-        <div v-else-if="error" class="text-center text-red-600">
-          {{ error }}
+        <div v-else-if="error" class="text-center my-20">
+            <h1 class="text-3xl font-bold mb-8 text-center">We're sorry...</h1>
+            <p class="text-center">There was an error with your order. Please try again later.</p>
         </div>
         <div v-else-if="confirmationData" class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="bg-white p-6 rounded-lg shadow">
@@ -55,9 +56,7 @@
   const confirmationData = ref(null);
   
   onMounted(async () => {
-    console.log('>>> route.query', route.query)
     const paymentIntent = route.query.payment_intent;
-    console.log('>>> confirmation payment_intent', paymentIntent)
     if (!paymentIntent) {
       error.value = 'No order information found.';
       loading.value = false;
@@ -72,10 +71,8 @@
         },
       });
       const data = await response.json();
-      console.log('>>> confirmation data', data)
       loading.value = false;
       confirmationData.value = data.paymentIntent;
-      console.log('>>> confirmation confirmationData', confirmationData.value)
     } catch (error) {
       console.error('Error fetching order details:', error);
       error.value = 'Failed to load order details. Please try again later.';
@@ -106,87 +103,3 @@
     }
   }
   </style>
-
-
-
-<!-- <template>
-    <div class="flex flex-col min-h-screen">
-      <NavBar />
-      <main class="flex-grow container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-4">Thank you for your order!</h1>
-        <div v-if="loading">
-          Loading order details...
-        </div>
-        <div v-else-if="error">
-          {{ error }}
-        </div>
-        <div v-else-if="confirmationData">
-          <p class="mb-4">We've received your order and will contact you as soon as your package is on its way.</p>
-          
-          <h1 class="text-3xl font-bold mb-4">Order Details</h1>
-          <p class="mb-4">Reference: {{ confirmationData.id }}</p>
-          <p class="mb-4">Order Amount: {{ formatAmount(confirmationData.amount, confirmationData.currency) }}</p>
-          
-          <h2 class="text-2xl font-bold mb-2">Shipping To</h2>
-          <p class="mb-4">{{ confirmationData.shipping.address.city }}, {{ confirmationData.shipping.address.state }}</p>
- 
-          <SfButton @click="goToHome">Continue shopping</SfButton>
-        </div>
-      </main>
-      <Newsletter />
-      <Footer />
-    </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import { SfButton } from '@storefront-ui/vue';
-  
-  const route = useRoute();
-  const router = useRouter();
-  
-  const loading = ref(true);
-  const error = ref(null);
-  const confirmationData = ref(null);
-  
-  onMounted(async () => {
-    console.log('>>> route.query', route.query)
-    const paymentIntent = route.query.payment_intent;
-    console.log('>>> confirmation payment_intent', paymentIntent)
-    if (!paymentIntent) {
-      error.value = 'No order information found.';
-      loading.value = false;
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/checkout?payment_intent=${paymentIntent}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      console.log('>>> confirmation data', data)
-      loading.value = false;
-      confirmationData.value = data.paymentIntent;
-      console.log('>>> confirmation confirmationData', confirmationData.value)
-    } catch (error) {
-      console.error('Error fetching order details:', error);
-      error.value = 'Failed to load order details. Please try again later.';
-      loading.value = false;
-    }
-  });
-  
-  const formatAmount = (amount, currency) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency || 'USD'
-    }).format(amount / 100); 
-  };
-  
-  const goToHome = () => {
-    router.push('/');
-  };
-  </script> -->

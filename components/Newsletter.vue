@@ -80,7 +80,6 @@ const subscribeNewsletter = (email: string) => {
     emailDataBase.value.push(email);
     setTimeout(() => (showPositiveAlert.value = false), 5000);
   }
-  console.log(email);
   inputValue.value = '';
 };
 </script>

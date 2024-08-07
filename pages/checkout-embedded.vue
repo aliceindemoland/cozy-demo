@@ -30,7 +30,6 @@ onMounted(async() => {
         })
       });
       const { clientSecret } = await response.json();
-      console.log('>>> clientSecret', clientSecret)
       return clientSecret;
     };
 

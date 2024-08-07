@@ -16,10 +16,8 @@ import { useProducts } from '../composables/useState';
 
 const emit = defineEmits(['openDrawer']);
 const { products } = useProducts();
-console.log('>>> products', products)
 
 const handleOpenDrawer = () => {
   emit('openDrawer');
-  console.log('ProductList: openDrawer event re-emitted');
 };
 </script>

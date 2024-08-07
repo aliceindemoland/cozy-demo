@@ -15,11 +15,11 @@
               <p>Estimated Sales Tax</p>
             </div>
             <div class="flex flex-col text-right">
-              <p>{{ formatPrice(orderDetails.originalPrice) }}</p>
+              <p>{{ formatPrice(subtotal) }}</p>
               <!-- <p class="typography-text-xs text-neutral-500">{{ formatPrice(orderDetails.originalPrice) }}</p> -->
               <!-- <p class="typography-text-xs text-secondary-700">{{ formatPrice(orderDetails.savings) }}</p> -->
-              <p class="my-2">{{ formatPrice(orderDetails.delivery) }}</p>
-              <p>{{ formatPrice(orderDetails.tax) }}</p>
+              <p class="my-2">FREE</p>
+              <p>{{ formatPrice(tax) }}</p>
             </div>
           </div>
           <div v-if="promoCode" class="flex items-center mb-5 py-5 border-y border-neutral-200">
@@ -113,20 +113,17 @@
   const showAddedCodeAlert = ref(false);
   const showErrorAlert = ref(false);
 
-  const { itemsInCart, subtotal } = useCart()
+  const { itemsInCart, subtotal, tax, totalPrice } = useCart()
   
   const orderDetails = {
     items: itemsInCart.value,
     originalPrice: subtotal.value,
-    savings: -787.0,
+    savings: 0.0,
     delivery: 0.0,
-    tax: 7.47,
+    tax: tax.value,
   };
   
   const promoCode = ref(0);
-  
-
-  const totalPrice = orderDetails.originalPrice + orderDetails.tax;
 
   const checkPromoCode = () => {
     if ((promoCode.value === -100 && inputValue.value.toUpperCase() === 'VSF2020') || !inputValue.value) return;

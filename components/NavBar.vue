@@ -6,8 +6,8 @@
           <SfIconMenu />
         </SfButton>
         
-        <a
-          href="#"
+        <router-link
+          to="/"
           aria-label="SF Homepage"
           class="absolute left-1/2 transform -translate-x-1/2 md:static md:translate-x-0 md:mr-4 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm shrink-0"
         >
@@ -16,7 +16,7 @@
             alt="Sf Logo"
             class="w-[10rem] h-auto sm:w-[11rem] md:w-[12rem] lg:w-[16.5rem] lg:h-[6.75rem]"
             />
-        </a>
+        </router-link>
         
         <SfButton 
           variant="tertiary" 
@@ -158,11 +158,7 @@ import {
 const { isDrawerOpen, openDrawer } = useDrawer();
 
 const handleOpenDrawer = () => {
-
     openDrawer();
-  
-  // console.log('NavBar: openDrawer event emitted');
-  // emit('openDrawer');
 }
 
 </script>

@@ -86,7 +86,6 @@
   const { isDrawerOpen, closeDrawer } = useDrawer();
   
   const handleContinueToCheckout = async () => {
-    console.log('Continue to Checkout');
     navigateTo({
     //   path: '/checkout-embedded',
     path: '/checkout',
@@ -94,7 +93,6 @@
   };
   
   const handleRemoveFromCart = (productId) => {
-    console.log('Remove from Cart', productId);
     removeFromCart(productId);
   }
 

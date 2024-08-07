@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
     if (event.node.req.method === 'POST') {
         const body = await readBody(event);
         const { amount } = body;
-        console.log('>>> amount', amount)
       try {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
@@ -39,7 +38,6 @@ export default defineEventHandler(async (event) => {
               enabled: true,
             },
           });
-          console.log('>>> paymentIntent', paymentIntent)
           return { clientSecret: paymentIntent.client_secret };
       } catch (error) {
         console.error('Error retrieving payment intent:', error);
